@@ -7,8 +7,6 @@ const information = document.querySelector('.information');
 	return fetch(url)
 		.then(data => data.json())
 		.catch(errorData => console.log(errorData))
-		.finally(() => console.log('Сессия завершена')
-		);
 };
 const createOption = ({model, brand}) => {
 	return `<option value="${model}">${brand}</option>`
@@ -30,14 +28,17 @@ const makeInformationDiv = (modell,carsArray,inpValue) => {
 	
  }
 
-const carsArray = getData('cars.json');
-carsArray
+
+getData('cars.json')
 	.then(data => {
-		console.log(data);
 		makeOPtions(data.cars, selectCar);
-		selectCar.addEventListener('change', (e) => { 
-			e.preventDefault();
-			information.innerHTML = '';
-			information.insertAdjacentHTML('afterbegin', makeInformationDiv(selectCar.value, data.cars,selectCar.value)); 
+	});
+	
+	selectCar.addEventListener('change', (e) => { 
+		e.preventDefault();
+		information.innerHTML = '';
+		getData('cars.json').then(data => {
+			information.insertAdjacentHTML('afterbegin', makeInformationDiv(selectCar.value, data.cars, selectCar.value));
 		});
+		 
 	});
